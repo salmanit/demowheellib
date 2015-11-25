@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/lib_title_bg"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@string/weight"
+            android:textColor="@color/lib_color_text_show" />
+
+        <Button
+            android:id="@+id/btn_cancel_select_weight"
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/lib_cancel_bg"
+            android:text="@string/wheel_cancel"
+            android:textColor="@color/lib_color_cancel" />
+
+        <Button
+            android:id="@+id/btn_submit_select_weight"
+            android:layout_width="80dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@drawable/lib_ok_bg"
+            android:text="@string/wheel_complete"
+            android:textColor="@color/lib_color_ok" />
+    </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/birthday_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="220dip"
+            android:paddingLeft="1dip"
+            android:paddingRight="1dip"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <com.sage.libwheelview.widget.wheel.WheelView
+                android:id="@+id/weight_select_weight"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" />
+
+            <com.sage.libwheelview.widget.wheel.WheelView
+                android:id="@+id/float_select_weight"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="lib_date">
+        <item>年</item>
+        <item>月</item>
+        <item>日</item>
+    </string-array>
+    <string-array name="lib_item_sex">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+    <color name="lib_item_text_color">@android:color/black</color>
+    <color name="lib_color_default_bg">#f9f9f9</color>
+    <color name="lib_color_cancel">#000000</color>
+    <color name="lib_color_ok">#000000</color>
+    <color name="lib_color_text_show">#fff</color>
+    <drawable name="lib_ok_bg">@null</drawable>
+    <drawable name="lib_cancel_bg">@null</drawable>
+    <drawable name="lib_title_bg">@color/lib_color_default_bg</drawable>
+
+    <string name="wheel_date_of_birth">出生年月</string>
+    <string name="height">身高</string>
+    <string name="weight">体重(公斤)</string>
+    <string name="wheel_cancel">取消</string>
+    <string name="wheel_complete">完成</string>
+    <style name="PopupAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/anim_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_out</item>
+    </style>
+</resources>
