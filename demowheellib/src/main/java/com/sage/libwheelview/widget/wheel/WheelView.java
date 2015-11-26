@@ -323,9 +323,6 @@ public class WheelView extends View {
 		clickingListeners.remove(listener);
 	}
 
-	/**
-	 * Notifies listeners about clicking
-	 */
 	protected void notifyClickListenersAboutClick(int item) {
 		for (OnWheelClickedListener listener : clickingListeners) {
 			listener.onItemClicked(this, item);
@@ -428,12 +425,6 @@ public class WheelView extends View {
 		this.drawShadows = drawShadows;
 	}
 
-	/**
-	 * Set the shadow gradient color
-	 * @param start
-	 * @param middle
-	 * @param end
-	 */
 	public void setShadowColor(int start, int middle, int end) {
 		SHADOWS_COLORS = new int[] {start, middle, end};
 	}
