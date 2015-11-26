@@ -33,7 +33,7 @@ public class SelectSimpletPopupWindow extends PopupWindow implements
 	private WheelView select_simple;
 	private Handler mHandler;
 	private String[] arr;
-
+	public static final int WHAT=10;
 	public SelectSimpletPopupWindow(Activity context, String[] arrays,int select,
 			Handler handler) {
 		super(context);
@@ -110,11 +110,12 @@ public class SelectSimpletPopupWindow extends PopupWindow implements
 	public void onClick(View v) {
 		if(v.getId()==R.id.btn_submit_select_simple){
 			Message message = Message.obtain();
-			message.what = 10;
-			Bundle bundle = new Bundle();
-			bundle.putString(CHECKED_CONTENT, arr[select_simple.getCurrentItem()]);
-			bundle.putInt(CHECKED_INDEX, select_simple.getCurrentItem());
-			message.setData(bundle);
+			message.what = WHAT;
+			message.arg1=select_simple.getCurrentItem();
+//			Bundle bundle = new Bundle();
+//			bundle.putString(CHECKED_CONTENT, arr[select_simple.getCurrentItem()]);
+//			bundle.putInt(CHECKED_INDEX, select_simple.getCurrentItem());
+//			message.setData(bundle);
 			mHandler.sendMessage(message);
 		}else if(v.getId()==R.id.btn_cancel_select_simple){
 

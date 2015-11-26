@@ -25,6 +25,7 @@ import java.util.Calendar;
 
 public class SelectBirthdayPopupWindow extends PopupWindow implements OnClickListener {
 
+	public static final int WHAT=5;
 	private int beforeYear=120;
 	private Activity mContext;
 	private View mMenuView;
@@ -165,16 +166,13 @@ public class SelectBirthdayPopupWindow extends PopupWindow implements OnClickLis
 	public void onClick(View v) {
 		if(v.getId()==R.id.btn_submit_select_birthday){
 			Message message = Message.obtain();
-			message.what=8;
-			Bundle bundle = new Bundle();
-			bundle.putString("birthday", age);
-			message.setData(bundle);
+			message.what=WHAT;
+			message.obj=age;
 			mHandler.sendMessage(message);
-			dismiss();
 		}else if(v.getId()==R.id.btn_cancel_select_birthday){
-			dismiss();
-		}
 
+		}
+		dismiss();
 	}
 
 	

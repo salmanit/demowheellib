@@ -32,30 +32,45 @@ public class SelectWeightPopupWindow extends PopupWindow implements
 	private WheelView select_weight, select_float;
 	private Handler mHandler;
 	private final String values[] = new String[] { ".0", ".5", };
-
-	/**@param weight 单精度,两位数至少，比如30，或者99.5；
-	 * */
-	public SelectWeightPopupWindow(Activity context, String weight,
-			Handler handler) {
+	public static final int WHAT=7;
+	private int minWeight;
+	private int maxWeight;
+	public SelectWeightPopupWindow(Context context, float weight,
+								   Handler handler) {
 		super(context);
+		initData(context,weight,30,200,handler);
+	}
+	public SelectWeightPopupWindow(Context context, float weight,int minWeight,int maxWeight,
+								   Handler handler) {
+		super(context);
+		initData(context,weight,minWeight,maxWeight,handler);
+	}
+
+
+	private void initData(Context context, float weight,int minWeight,int maxWeight,
+						  Handler handler){
 		setAnimationStyle(R.style.PopupAnimation);
 		mHandler = handler;
-		// "体重值：70.5"
-		int i = weight.length();
-		try{
-			if (i <= 2) {
-				weight_number = Integer.parseInt(weight);
-			} else {
-				weight_number = Integer.parseInt(weight.substring(0, i - 2));
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			weight_number=50;
+		this.minWeight=minWeight;
+		this.maxWeight=maxWeight;
+		if(weight<=0||minWeight<=0||maxWeight<=0){
+			throw new IllegalArgumentException("weight must be positive number");
 		}
-
-		
-		float_number = Integer.parseInt(weight.substring(i - 1, i));
-
+		if(minWeight>=maxWeight){
+			throw  new IllegalArgumentException("minWeigh is big than maxHeight");
+		}
+		if(weight<minWeight){
+			weight=minWeight;
+		}else if(weight>maxWeight+0.5f){
+			weight=maxWeight;
+		}
+		weight_number= (int) weight;
+		float_number= (int) ((weight-weight_number)*10);
+		if(float_number<5){
+			float_number=0;
+		}else{
+			float_number=5;
+		}
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mMenuView = inflater.inflate(R.layout.popupwindow_weight, null);
@@ -74,9 +89,9 @@ public class SelectWeightPopupWindow extends PopupWindow implements
 		btn_submit.setOnClickListener(this);
 		btn_cancel.setOnClickListener(this);
 
-		weightAdapter = new DateNumericAdapter(context, 30, 200, weight_number);
+		weightAdapter = new DateNumericAdapter(context, minWeight, maxWeight, weight_number);
 		select_weight.setViewAdapter(weightAdapter);
-		select_weight.setCurrentItem(weight_number - 30);
+		select_weight.setCurrentItem(weight_number - minWeight);
 
 		select_float = (WheelView) mMenuView
 				.findViewById(R.id.float_select_weight);
@@ -101,6 +116,7 @@ public class SelectWeightPopupWindow extends PopupWindow implements
 		this.setBackgroundDrawable(dw);
 		this.update();
 	}
+
 
 	@Override
 	public void showAtLocation(View parent, int gravity, int x, int y) {
@@ -142,16 +158,14 @@ public class SelectWeightPopupWindow extends PopupWindow implements
 	public void onClick(View v) {
 		if(v.getId()==R.id.btn_submit_select_weight){
 			Message message = Message.obtain();
-			message.what = 7;
-			Bundle bundle = new Bundle();
-			weight_number = select_weight.getCurrentItem() + 30;
+			message.what = WHAT;
+			weight_number = select_weight.getCurrentItem() + minWeight;
 			float_number = select_float.getCurrentItem();
 			if (float_number == 0) {
-				bundle.putString("weight", weight_number + "");
+				message.obj=weight_number;
 			} else {
-				bundle.putString("weight", weight_number + ".5");
+				message.obj=weight_number+0.5f;
 			}
-			message.setData(bundle);
 			mHandler.sendMessage(message);
 		}else if(v.getId()==R.id.btn_cancel_select_weight){
 

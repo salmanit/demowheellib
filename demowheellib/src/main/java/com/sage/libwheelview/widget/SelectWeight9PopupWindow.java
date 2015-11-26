@@ -3,7 +3,6 @@ package com.sage.libwheelview.widget;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -14,70 +13,92 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
 import com.sage.libwheelview.widget.wheel.WheelView;
+import com.sage.libwheelview.widget.wheel.adapter.ArrayWheelAdapter;
 import com.sage.libwheelview.widget.wheel.adapter.NumericWheelAdapter;
 
 
-public class SelectHeightPopupWindow extends PopupWindow implements
+public class SelectWeight9PopupWindow extends PopupWindow implements
 		OnClickListener {
-	private int minHeight=120;
-	private int maxHeight=250;
-	private int height_number;
+
 	private View mMenuView;
 	private ViewFlipper viewfipper;
 	private Button btn_submit, btn_cancel;
-	private DateNumericAdapter heightAdapter;
-	private WheelView select_height;
+	private int weight_number;
+	private int float_number;
+	private DateNumericAdapter weightAdapter;
+	private WheelView select_weight, select_float;
 	private Handler mHandler;
-	public static final int WHAT=6;
-	// 使用自定义的Log机制
-	public SelectHeightPopupWindow(Context context, int height,int minHeight,int maxHeight,
-								   Handler handler) {
+	private final String values[] = new String[10];
+	public static final int WHAT=8;
+	private int minWeight;
+	private int maxWeight;
+	public SelectWeight9PopupWindow(Context context, float weight,
+									Handler handler) {
 		super(context);
-		init(context,height,minHeight,maxHeight,handler);
+		initData(context,weight,30,200,handler);
 	}
-	public SelectHeightPopupWindow(Context context, int height,
-			Handler handler) {
+	public SelectWeight9PopupWindow(Context context, float weight, int minWeight, int maxWeight,
+									Handler handler) {
 		super(context);
-		init(context,height,120,250,handler);
+		initData(context,weight,minWeight,maxWeight,handler);
 	}
 
-	private void init(Context context,int height,int minHeight,int maxHeight,Handler handler){
+
+	private void initData(Context context, float weight,int minWeight,int maxWeight,
+						  Handler handler){
 		setAnimationStyle(R.style.PopupAnimation);
 		mHandler = handler;
-		this.minHeight=minHeight;
-		this.maxHeight=maxHeight;
-		if(minHeight>=maxHeight){
-			throw new IllegalArgumentException("minHeight is big than maxHeight");
+		this.minWeight=minWeight;
+		this.maxWeight=maxWeight;
+		if(weight<=0||minWeight<=0||maxWeight<=0){
+			throw new IllegalArgumentException("weight must be positive number");
 		}
-		height_number=height;
-		if(height_number<minHeight){
-			height_number=minHeight;
-		}else if(height_number>maxHeight){
-			height_number=maxHeight;
+		if(minWeight>=maxWeight){
+			throw  new IllegalArgumentException("minWeigh is big than maxHeight");
 		}
-
+		if(weight<minWeight){
+			weight=minWeight;
+		}else if(weight>maxWeight+0.9){
+			weight=maxWeight;
+		}
+		for(int i=0;i<10;i++){
+			values[i]="."+i;
+		}
+		weight_number= (int) weight;
+		float_number= (int) ((weight-weight_number)*10);
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mMenuView = inflater.inflate(R.layout.popupwindow_heigth, null);
+		mMenuView = inflater.inflate(R.layout.popupwindow_weight, null);
 		viewfipper = new ViewFlipper(context);
 		viewfipper.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT));
 
-		select_height = (WheelView) mMenuView.findViewById(R.id.height_select_height);
-
+		select_weight = (WheelView) mMenuView
+				.findViewById(R.id.weight_select_weight);
+		select_float = (WheelView) mMenuView
+				.findViewById(R.id.float_select_weight);
 		btn_submit = (Button) mMenuView
-				.findViewById(R.id.btn_submit_select_height);
+				.findViewById(R.id.btn_submit_select_weight);
 		btn_cancel = (Button) mMenuView
-				.findViewById(R.id.btn_cancel_select_height);
+				.findViewById(R.id.btn_cancel_select_weight);
 		btn_submit.setOnClickListener(this);
 		btn_cancel.setOnClickListener(this);
 
-		heightAdapter = new DateNumericAdapter(context, minHeight, maxHeight,
-				height_number);
-		select_height.setViewAdapter(heightAdapter);
-		select_height.setCurrentItem(height_number-minHeight);
+		weightAdapter = new DateNumericAdapter(context, minWeight, maxWeight, weight_number);
+		select_weight.setViewAdapter(weightAdapter);
+		select_weight.setCurrentItem(weight_number - minWeight);
 
+		select_float = (WheelView) mMenuView
+				.findViewById(R.id.float_select_weight);
+		ArrayWheelAdapter<String> floatAdapter = new ArrayWheelAdapter<>(
+				context, values);
+		floatAdapter.setItemResource(R.layout.float_item);
+		floatAdapter.setItemTextResource(R.id.tv_float_item);
+		floatAdapter.setEmptyItemResource(R.layout.float_item);
+		select_float.setViewAdapter(floatAdapter);
+		select_float.setCurrentItem(float_number);
 		viewfipper.addView(mMenuView);
 		viewfipper.setFlipInterval(6000000);
 		this.setContentView(viewfipper);
@@ -88,6 +109,8 @@ public class SelectHeightPopupWindow extends PopupWindow implements
 		this.setBackgroundDrawable(dw);
 		this.update();
 	}
+
+
 	@Override
 	public void showAtLocation(View parent, int gravity, int x, int y) {
 		super.showAtLocation(parent, gravity, x, y);
@@ -126,13 +149,14 @@ public class SelectHeightPopupWindow extends PopupWindow implements
 	}
 
 	public void onClick(View v) {
-		if(v.getId()==R.id.btn_submit_select_height){
+		if(v.getId()==R.id.btn_submit_select_weight){
 			Message message = Message.obtain();
 			message.what = WHAT;
-			height_number = select_height.getCurrentItem()+minHeight;
-			message.arg1=height_number;
+			weight_number = select_weight.getCurrentItem() + minWeight;
+			float_number = select_float.getCurrentItem();
+			message.obj=weight_number+float_number/10f;
 			mHandler.sendMessage(message);
-		}else if(v.getId()==R.id.btn_cancel_select_height){
+		}else if(v.getId()==R.id.btn_cancel_select_weight){
 
 		}
 		dismiss();
