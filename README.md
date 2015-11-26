@@ -28,21 +28,27 @@
 complile 'com.sage.libwheelview.widget:demowheellib:1.0.1'
 
 代码中简单的一行调用
-  需要传一个默认的选中的日期，格式2000-01-02
+  //需要传一个默认的选中的日期，格式2000-01-02
+  
 	private void chooseBirthday() {
 		 new SelectBirthdayPopupWindow(this,
 				tv_birthday.getText().toString(), mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
 	}
-  需要传一个身高的字符串，比如170，必须是整数型的字符串
+	
+  //需要传一个身高的字符串，比如170，必须是整数型的字符串
+  
 	private void chooseHeight() {
 		 new SelectHeightPopupWindow(this, height, mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
 	}
-  需要传一个体重的字符串，比如20.5，小数位只有0或者5传个整数也可以比如40
+	
+  //需要传一个体重的字符串，比如20.5，小数位只有0或者5传个整数也可以比如40
+  
 	private void chooseWeight() {
 		 new SelectWeightPopupWindow(this, weight, mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
 	}
 	
-	如果只是简单的一个选项，传入数组，以及默认的选中位置索引
+	//如果只是简单的一个选项，传入数组，以及默认的选中位置索引
+	
 	private void choosePart(String[] arrays, int select) {
 		 new SelectSimpletPopupWindow(this, arrays, select,
 				mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
