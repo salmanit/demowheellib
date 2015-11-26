@@ -32,7 +32,7 @@
 
 使用
 
-complile 'com.sage.libwheelview.widget:demowheellib:1.0.2'
+compile 'com.sage.libwheelview.widget:demowheellib:1.0.2'
 
 
 
