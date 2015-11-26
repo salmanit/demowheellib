@@ -24,60 +24,66 @@
     
     重写 drawable目录下wheel_bg.xml 可以修wheelview的背景颜色，重写wheel_val.xml可以修改那个选中的横条颜色
 
+如图所示，复写对应的资源文件即可替换库里默认的。
+
+
 使用
 complile 'com.sage.libwheelview.widget:demowheellib:1.0.1'
 
 代码中简单的一行调用
-  //需要传一个默认的选中的日期，格式2000-01-02
-  
-	private void chooseBirthday() {
-		 new SelectBirthdayPopupWindow(this,
-				tv_birthday.getText().toString(), mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
-	}
-	
-  //需要传一个身高的字符串，比如170，必须是整数型的字符串
-  
-	private void chooseHeight() {
-		 new SelectHeightPopupWindow(this, height, mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
-	}
-	
-  //需要传一个体重的字符串，比如20.5，小数位只有0或者5传个整数也可以比如40
-  
-	private void chooseWeight() {
-		 new SelectWeightPopupWindow(this, weight, mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
-	}
-	
-	//如果只是简单的一个选项，传入数组，以及默认的选中位置索引
-	
-	private void choosePart(String[] arrays, int select) {
-		 new SelectSimpletPopupWindow(this, arrays, select,
-				mHandler).showAtLocation(findViewById(R.id.layout_root), Gravity.BOTTOM, 0, 0);
-	}
-	
-	
-	选择完数据的获取
-		private Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			btn_save.setEnabled(true);
-			switch (msg.what) {
-			case 8:
-				birth = msg.getData().getString("birthday");
-				tv_birthday.setText(birth);
-				break;
-			case 6:
-				height = msg.getData().getString("height");
-				tv_height.setText(getString(R.string.height_unit, height));
-				break;
-			case 7:
-				weight = msg.getData().getString("weight");
-				tv_weight.setText(getString(R.string.weight_unit, weight));
-				break;
-			case 10:
-					index = msg.getData().getInt(SelectSimpletPopupWindow.CHECKED_INDEX);
-					Name = msg.getData().getString(SelectSimpletPopupWindow.CHECKED_CONTENT);
-				break;
-			}
-		}
-	};
+
+
+    private String[] arr=new String[]{"张三","li","王五","赵六"};
+
+    public void btnClick(View view){
+        switch (view.getId()){
+            case R.id.btn_height:
+                new SelectHeightPopupWindow(this,170,mHandler).showAtLocation(view, Gravity.BOTTOM,0,0);
+                //new SelectHeightPopupWindow(this,170,100,200,mHandler).showAtLocation(view, Gravity.BOTTOM,0,0);
+                break;
+            case R.id.btn_weight:
+                new SelectWeightPopupWindow(this,70,mHandler).showAtLocation(view,Gravity.BOTTOM,0,0);
+                //new SelectWeightPopupWindow(this,70,30,250,mHandler).showAtLocation(view,Gravity.BOTTOM,0,0);
+                break;
+            case R.id.btn_weight9:
+                new SelectWeight9PopupWindow(this,70.9f,mHandler).showAtLocation(view,Gravity.BOTTOM,0,0);
+                //new SelectWeight9PopupWindow(this,70.9f,40,100,mHandler).showAtLocation(view,Gravity.BOTTOM,0,0);
+                break;
+            case R.id.btn_birthday:
+                new SelectBirthdayPopupWindow(this,"2000-01-02",mHandler).showAtLocation(view,Gravity.BOTTOM,0,0);
+                break;
+            case R.id.btn_custom:
+                new SelectSimpletPopupWindow(this,arr,3,mHandler).showAtLocation(view,Gravity.BOTTOM,0,0);
+                break;
+        }
+    }
+
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SelectHeightPopupWindow.WHAT:
+                    showToast("身高为："+msg.arg1);
+                    break;
+                case SelectWeightPopupWindow.WHAT:
+                case SelectWeight9PopupWindow.WHAT:
+                    float weight= (float) msg.obj;
+                    showToast("体重为:"+weight);
+                    break;
+                case SelectBirthdayPopupWindow.WHAT:
+                    String birthday= (String) msg.obj;
+                    showToast("生日："+birthday);
+                    break;
+                case  SelectSimpletPopupWindow.WHAT:
+                    int index=msg.arg1;
+                    showToast(arr[index]);
+                    break;
+            }
+        }
+    };
+
+    private void showToast(String msg){
+        Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
+    }
