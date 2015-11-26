@@ -25,7 +25,7 @@
     重写 drawable目录下wheel_bg.xml 可以修wheelview的背景颜色，重写wheel_val.xml可以修改那个选中的横条颜色
 
 如图所示，复写对应的资源文件即可替换库里默认的。
-![Image of 示例](https://github.com/salmanit/demowheellib/res.png)
+![Image of 示例](https://raw.githubusercontent.com/salmanit/demowheellib/master/res.png)
 
 
 使用
