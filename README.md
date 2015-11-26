@@ -3,6 +3,8 @@
 简介，就是用网上的wheelview，写了 生日，身高，体重的选择器，方便项目调用。
 
 下面是values下边的参数，可以通过复覆盖掉库里的，方便修改颜色背景等。
+
+
   <color name="lib_item_text_color">@android:color/black</color>
     <color name="lib_color_default_bg">#f9f9f9</color>
     <color name="lib_color_cancel">#000000</color>
@@ -29,7 +31,10 @@
 
 
 使用
-complile 'com.sage.libwheelview.widget:demowheellib:1.0.1'
+
+complile 'com.sage.libwheelview.widget:demowheellib:1.0.2'
+
+
 
 代码中简单的一行调用
 
