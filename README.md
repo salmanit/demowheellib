@@ -32,8 +32,10 @@
 
 使用
 
-compile 'com.sage.libwheelview.widget:demowheellib:1.0.2'
+compile 'com.sage.libwheelview.widget:demowheellib:1.0.3'
 
+最新版compile 'com.sage.libwheelview.widget:demowheellib:1.1.0'
+具体看demo，用dialogfragment替换popupwindow，方便背景变暗操作
 
 
 代码中简单的一行调用
